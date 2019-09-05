@@ -21,7 +21,7 @@ import jaci.pathfinder.Waypoint;
 public class TestSandstormExample extends CommandGroup {
   Waypoint[] points = new Waypoint[] {
     new Waypoint(0, 0, 0),
-    new Waypoint(1, 0, 0)
+    new Waypoint(3, 0, 0)
     };
 
 Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH,

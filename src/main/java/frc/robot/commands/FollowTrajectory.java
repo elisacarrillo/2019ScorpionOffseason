@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -129,6 +130,8 @@ public class FollowTrajectory extends Command implements Sendable  {
 				Constants.kDrive_Motion_V,
 				Constants.kDrive_Motion_A);
 
+		
+
 		leftFollower.reset();
 		rightFollower.reset();
 		drive.resetEncoders();
@@ -214,12 +217,12 @@ public class FollowTrajectory extends Command implements Sendable  {
 			
 			//forwards
 			if (!backwards) {
-				leftOutput = leftFollower.calculate(drive.getLeftPosition());
-				rightOutput = rightFollower.calculate(drive.getRightPosition());
+				leftOutput = leftFollower.calculate(drive.getLeftPositionTalon());
+				rightOutput = rightFollower.calculate(drive.getRightPositionTalon());
 			} else {
 				//backwards
-				leftOutput = leftFollower.calculate(-drive.getRightPosition()); //left = -right
-				rightOutput = rightFollower.calculate(-drive.getLeftPosition()); //right = -left
+				leftOutput = leftFollower.calculate(-drive.getRightPositionTalon()); //left = -right
+				rightOutput = rightFollower.calculate(-drive.getLeftPositionTalon()); //right = -left
 			}
 			
 			if (!backwards) {
