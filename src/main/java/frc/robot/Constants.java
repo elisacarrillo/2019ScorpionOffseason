@@ -45,7 +45,7 @@ public class Constants {
 	public static double kDrive_PeakCurrentLimit = 80;
 	public static double kDrive_PeakCurrentTime_ms = 100;
 	public static double kDrive_Motion_trackwidth = 2.72;
-	public static double kDrive_WheelDiameterInch = 3.875;
+	public static double kDrive_WheelDiameterInch = 6.0;
 	public static double kDrive_Motion_Velocity = 6.0;
 	public static double kDrive_Motion_Acceleration = 13.0;
 	public static double getWheelCircumference() { 

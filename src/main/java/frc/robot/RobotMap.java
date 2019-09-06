@@ -25,10 +25,10 @@ public class RobotMap {
   public final static int ULTRA_ECHO_CHANNEL = 1;
 
   //DRIVE
-  public static final int RIGHT_MASTER_PORT = 20;
+  public static final int RIGHT_MASTER_PORT = 15;
+  public static final int LEFT_MASTER_PORT = 14;
   public static final int RIGHT_SLAVE_PORT_1 = 1;
-  public static final int RIGHT_SLAVE_PORT_2 = 2;
-  public static final int LEFT_MASTER_PORT = 21;
+  public static final int RIGHT_SLAVE_PORT_2 = 20;
   public static final int LEFT_SLAVE_PORT_1 = 3;
   public static final int LEFT_SLAVE_PORT_2 = 4;
 

@@ -76,32 +76,29 @@ public class Drivetrain extends Subsystem {
   public CANPIDController rightPID2 = new CANPIDController(rightFollowerB);
 
   public Drivetrain (){
-    rightFollowerA.set(rightMaster.getMotorOutputPercent());
-    rightFollowerB.set(rightMaster.getMotorOutputPercent());
-    leftFollowerA.set(rightMaster.getMotorOutputPercent());
-    leftFollowerB.set(rightMaster.getMotorOutputPercent());
-
+    
     leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     leftMaster.setNeutralMode(NeutralMode.Brake);
-    leftMaster.enableVoltageCompensation(true);
-    leftMaster.configVoltageCompSaturation(12, 10);
+    // leftMaster.enableVoltageCompensation(true);
+    // leftMaster.configVoltageCompSaturation(12, 10);
+    // leftMaster.configForwardSoftLimitEnable(false, 10);
+    // leftMaster.configReverseSoftLimitEnable(false, 10);
+    // leftMaster.setControlFramePeriod(ControlFrame.Control_3_General, 5);
+    // leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 5, 10);
+   // leftMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_20Ms, 10);
 
     rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     rightMaster.setNeutralMode(NeutralMode.Brake);
-    rightMaster.enableVoltageCompensation(true);
-    rightMaster.configVoltageCompSaturation(12, 10);
+    // rightMaster.enableVoltageCompensation(true);
+    // rightMaster.configVoltageCompSaturation(12, 10);
+    // rightMaster.configForwardSoftLimitEnable(false, 10);
+    // rightMaster.configReverseSoftLimitEnable(false, 10);
+  //  rightMaster.setControlFramePeriod(ControlFrame.Control_3_General, 5);
+  //  rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 5, 10);
+   // rightMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_20Ms, 10);
 
-    leftMaster.configForwardSoftLimitEnable(false, 10);
-    leftMaster.configReverseSoftLimitEnable(false, 10);
-    leftMaster.setControlFramePeriod(ControlFrame.Control_3_General, 5);
-    leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 5, 10);
-    leftMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_20Ms, 10);
-
-    rightMaster.configForwardSoftLimitEnable(false, 10);
-    rightMaster.configReverseSoftLimitEnable(false, 10);
-    rightMaster.setControlFramePeriod(ControlFrame.Control_3_General, 5);
-    rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 5, 10);
-    rightMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_20Ms, 10);
+    rightFollowerA.follow(rightFollowerB);
+    leftFollowerA.follow(leftFollowerB);
 
     configMotorControllers(10);
     
@@ -116,32 +113,30 @@ public class Drivetrain extends Subsystem {
     leftMaster.setSensorPhase(false);
 		leftMaster.setInverted(false); // change here
 		leftFollowerA.setInverted(false);
-		leftFollowerB.setInverted(false);
-		//leftFollowerC.setInverted(false);
+		leftFollowerB.setInverted(true);
 
-    leftMaster.configSetParameter(ParamEnum.eContinuousCurrentLimitAmps, Constants.kDrive_ContinuousCurrentLimit, 0x00, 0x00, timeout);
-		leftMaster.configSetParameter(ParamEnum.ePeakCurrentLimitAmps, Constants.kDrive_PeakCurrentLimit, 0x00, 0x00, timeout);
-		leftMaster.configSetParameter(ParamEnum.ePeakCurrentLimitMs, Constants.kDrive_PeakCurrentTime_ms, 0x00, 0x00, timeout);
-		leftMaster.enableCurrentLimit(false);
+  //  leftMaster.configSetParameter(ParamEnum.eContinuousCurrentLimitAmps, Constants.kDrive_ContinuousCurrentLimit, 0x00, 0x00, timeout);
+	// 	leftMaster.configSetParameter(ParamEnum.ePeakCurrentLimitAmps, Constants.kDrive_PeakCurrentLimit, 0x00, 0x00, timeout);
+	// 	leftMaster.configSetParameter(ParamEnum.ePeakCurrentLimitMs, Constants.kDrive_PeakCurrentTime_ms, 0x00, 0x00, timeout);
+	// 	leftMaster.enableCurrentLimit(false);
 		
-		leftMaster.configPeakOutputForward(Constants.kDrive_peakOutput, timeout);
-		leftMaster.configPeakOutputReverse(-Constants.kDrive_peakOutput, timeout);
-    leftMaster.configOpenloopRamp(0.0, timeout);
+		// leftMaster.configPeakOutputForward(Constants.kDrive_peakOutput, timeout);
+		// leftMaster.configPeakOutputReverse(-Constants.kDrive_peakOutput, timeout);
+    // leftMaster.configOpenloopRamp(0.0, timeout);
     
     rightMaster.setSensorPhase(false);
 		rightMaster.setInverted(false);
 		rightFollowerA.setInverted(false);
 		rightFollowerB.setInverted(false);
-  //	rightFollowerC.setInverted(false);
   
-    rightMaster.configSetParameter(ParamEnum.eContinuousCurrentLimitAmps, Constants.kDrive_ContinuousCurrentLimit, 0x00, 0x00, timeout);
-		rightMaster.configSetParameter(ParamEnum.ePeakCurrentLimitAmps, Constants.kDrive_PeakCurrentLimit, 0x00, 0x00, timeout);
-		rightMaster.configSetParameter(ParamEnum.ePeakCurrentLimitMs, Constants.kDrive_PeakCurrentTime_ms, 0x00, 0x00, timeout);
-		rightMaster.enableCurrentLimit(false);
+  //  rightMaster.configSetParameter(ParamEnum.eContinuousCurrentLimitAmps, Constants.kDrive_ContinuousCurrentLimit, 0x00, 0x00, timeout);
+	//	rightMaster.configSetParameter(ParamEnum.ePeakCurrentLimitAmps, Constants.kDrive_PeakCurrentLimit, 0x00, 0x00, timeout);
+	//	rightMaster.configSetParameter(ParamEnum.ePeakCurrentLimitMs, Constants.kDrive_PeakCurrentTime_ms, 0x00, 0x00, timeout);
+	//	rightMaster.enableCurrentLimit(false);
 		
-		rightMaster.configPeakOutputForward( Constants.kDrive_peakOutput, timeout);
-		rightMaster.configPeakOutputReverse(-Constants.kDrive_peakOutput, timeout);
-    rightMaster.configOpenloopRamp(0.0, timeout);
+		// rightMaster.configPeakOutputForward( Constants.kDrive_peakOutput, timeout);
+		// rightMaster.configPeakOutputReverse(-Constants.kDrive_peakOutput, timeout);
+    // rightMaster.configOpenloopRamp(0.0, timeout);
     
     int nativeVelocity = (int) (Constants.kDrive_Motion_Velocity * 1.0/Constants.getWheelCircumference() / 10.0);
     int nativeAcceleration = (int) (Constants.kDrive_Motion_Acceleration * 1.0/Constants.getWheelCircumference() / 10.0);
@@ -155,6 +150,7 @@ public class Drivetrain extends Subsystem {
     leftPID.setP(1);
     leftPID.setI(0);
     leftPID.setD(0);
+
     leftPID2.setP(1);
     leftPID2.setI(0);
     leftPID2.setD(0);
@@ -162,6 +158,10 @@ public class Drivetrain extends Subsystem {
     rightPID.setP(1);
     rightPID.setI(0);
     rightPID.setD(0);
+
+    rightPID2.setP(1);
+    rightPID2.setI(0);
+    rightPID2.setD(0);
     
   }
 
@@ -193,7 +193,7 @@ public class Drivetrain extends Subsystem {
   }
 
   public double getRightPositionTalon() {
-    return MotionUtils.rotationsToDistance(MotionUtils.ticksToRotations(leftMaster.getSelectedSensorPosition(), 4096, 1), Constants.getWheelCircumference());
+    return MotionUtils.rotationsToDistance(MotionUtils.ticksToRotations(rightMaster.getSelectedSensorPosition(), 4096, 1), Constants.getWheelCircumference());
   }
 
 
@@ -233,6 +233,20 @@ public class Drivetrain extends Subsystem {
     }
   }
 
+  public void periodic(){
+   //rightFollowerA.set(rightMaster.getMotorOutputPercent());
+   rightFollowerB.set(rightMaster.getMotorOutputPercent());
+   //leftFollowerA.set(leftMaster.getMotorOutputPercent());
+   leftFollowerB.set(leftMaster.getMotorOutputPercent()*-1);
+
+    SmartDashboard.putNumber("Drive Left Neo", getLeftPosition());
+    SmartDashboard.putNumber("Drive Right Neo", getRightPosition());
+    SmartDashboard.putNumber("Drive Left Talon", getLeftPositionTalon());
+    SmartDashboard.putNumber("Drive Right Talon", getRightPositionTalon());
+
+    SmartDashboard.putNumber("% Right", rightMaster.getMotorOutputPercent());
+    SmartDashboard.putNumber("% Left", leftMaster.getMotorOutputPercent());
+  }
  // public void moveFoward(int speed, int timeout){
  //  rightMaster.set(speed);
  //    rightMaster.setCANTimeout(timeout);
