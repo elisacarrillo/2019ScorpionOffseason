@@ -69,7 +69,8 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     Scheduler.getInstance().removeAll();
-    HAL.drive.setBrake(false);
+    HAL.drive.setBrake(true);
+    HAL.drive.resetEncoders();
   }
 
   @Override

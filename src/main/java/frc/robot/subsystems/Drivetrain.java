@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
+import java.math.*;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -27,6 +28,7 @@ import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import frc.robot.ninjaLib.MotionUtils;
 import frc.robot.ninjaLib.Values;
 import frc.robot.RobotMap;
+
 
 import  static frc.robot.HAL.navX;
 
@@ -101,6 +103,7 @@ public class Drivetrain extends Subsystem {
     leftFollowerA.follow(leftFollowerB);
 
     configMotorControllers(10);
+    //configMotorControllers(0);
     
     setBrake(true);
     drive = new DifferentialDrive(leftMaster, rightMaster);
@@ -110,10 +113,10 @@ public class Drivetrain extends Subsystem {
 
   public void configMotorControllers(int timeout){
     double kWheelCircumference = Constants.getWheelCircumference();  
-    leftMaster.setSensorPhase(false);
+    leftMaster.setSensorPhase(true);
 		leftMaster.setInverted(false); // change here
-		leftFollowerA.setInverted(false);
-		leftFollowerB.setInverted(true);
+		leftFollowerA.setInverted(true);
+		leftFollowerB.setInverted(false);
 
   //  leftMaster.configSetParameter(ParamEnum.eContinuousCurrentLimitAmps, Constants.kDrive_ContinuousCurrentLimit, 0x00, 0x00, timeout);
 	// 	leftMaster.configSetParameter(ParamEnum.ePeakCurrentLimitAmps, Constants.kDrive_PeakCurrentLimit, 0x00, 0x00, timeout);
@@ -126,8 +129,21 @@ public class Drivetrain extends Subsystem {
     
     rightMaster.setSensorPhase(false);
 		rightMaster.setInverted(false);
-		rightFollowerA.setInverted(false);
-		rightFollowerB.setInverted(false);
+		rightFollowerA.setInverted(true);
+    rightFollowerB.setInverted(true);
+    
+    rightMaster.config_kP(0, -(Constants.kDrive_Motion_P * (1023.0/1.0) * (1.0/(kWheelCircumference)) * (1.0/4096.0)), 10);
+		rightMaster.config_kI(0, -Constants.kDrive_Motion_I, 10);
+		rightMaster.config_kD(0, -(Constants.kDrive_Motion_D * (1023.0/1.0) * (1.0/(1.0/kWheelCircumference)) * (1.0/4096.0) * (10.0)), 10);
+		// rightMaster.config_kF(0, -(Constants.kDrive_Motion_V * (1023.0/1.0) * (1.0/(1.0/kWheelCircumference)) * (1.0/4096.0) * (10.0)),  10);
+		// rightMaster.config_IntegralZone(0, 50, 10);
+
+		leftMaster.config_kP(0, (Constants.kDrive_Motion_P * (1023.0/1.0) * (1.0/(kWheelCircumference)) * (1.0/4096.0)), 10);
+		leftMaster.config_kI(0, Constants.kDrive_Motion_I, 10);
+		leftMaster.config_kD(0, (Constants.kDrive_Motion_D * (1023.0/1.0) * (1.0/(1.0/kWheelCircumference)) * (1.0/4096.0) * (10.0)), 10);
+		// leftMaster.config_kF(0, (Constants.kDrive_Motion_V * (1023.0/1.0) * (1.0/(1.0/kWheelCircumference)) * (1.0/4096.0) * (10.0)),  10);
+		// leftMaster.config_IntegralZone(0, 50, 10);
+	
   
   //  rightMaster.configSetParameter(ParamEnum.eContinuousCurrentLimitAmps, Constants.kDrive_ContinuousCurrentLimit, 0x00, 0x00, timeout);
 	//	rightMaster.configSetParameter(ParamEnum.ePeakCurrentLimitAmps, Constants.kDrive_PeakCurrentLimit, 0x00, 0x00, timeout);
@@ -138,16 +154,18 @@ public class Drivetrain extends Subsystem {
 		// rightMaster.configPeakOutputReverse(-Constants.kDrive_peakOutput, timeout);
     // rightMaster.configOpenloopRamp(0.0, timeout);
     
+    //check to make sure that native velocity corresponds to actual velocity
+    //same thing with native acceleration
     int nativeVelocity = (int) (Constants.kDrive_Motion_Velocity * 1.0/Constants.getWheelCircumference() / 10.0);
     int nativeAcceleration = (int) (Constants.kDrive_Motion_Acceleration * 1.0/Constants.getWheelCircumference() / 10.0);
 
-    leftMaster.configMotionCruiseVelocity(nativeVelocity, timeout);
-		leftMaster.configMotionAcceleration(nativeAcceleration, timeout);
-		rightMaster.configMotionCruiseVelocity(nativeVelocity, timeout);
-		rightMaster.configMotionAcceleration(nativeAcceleration, timeout);
+    // leftMaster.configMotionCruiseVelocity(nativeVelocity, timeout);
+		// leftMaster.configMotionAcceleration(nativeAcceleration, timeout);
+		// rightMaster.configMotionCruiseVelocity(nativeVelocity, timeout);
+		// rightMaster.configMotionAcceleration(nativeAcceleration, timeout);
 
 
-    leftPID.setP(1);
+    /*leftPID.setP(1);
     leftPID.setI(0);
     leftPID.setD(0);
 
@@ -161,7 +179,7 @@ public class Drivetrain extends Subsystem {
 
     rightPID2.setP(1);
     rightPID2.setI(0);
-    rightPID2.setD(0);
+    rightPID2.setD(0);*/
     
   }
 
@@ -176,8 +194,10 @@ public class Drivetrain extends Subsystem {
 
   
 	public void resetEncoders() {
-		//leftMaster.setSelectedSensorPosition(0, 0, 0);
-		//rightMaster.setSelectedSensorPosition(0, 0, 0);
+		leftMaster.setSelectedSensorPosition(0, 0, 0);
+    rightMaster.setSelectedSensorPosition(0, 0, 0);
+    rightEncoderFollowerA.setPosition(0);
+    leftEncoderFollowerA.setPosition(0);
   }
 
   public double getLeftPosition() {
@@ -204,7 +224,22 @@ public class Drivetrain extends Subsystem {
 	public double getRightVelocity() {
 		return rightEncoderFollowerA.getVelocity() /  10.0 * Constants.getWheelCircumference();
   }
-  
+  public double getGyroHeading0(){
+	  return HAL.navX.getYaw();
+  }
+  public double getGyroHeading1(){
+    return Math.pow(HAL.navX.getAngle(),2);
+  }
+  public double getGyroHeading2(){
+    return HAL.navX.getAngleAdjustment();
+  }
+
+  public float getGyro3(){
+    return HAL.navX.getRawGyroX();
+  }
+
+
+
   public void positionPDauxF(double leftPos, double leftFF, double rightPos, double rightFF) {
 		leftMaster.selectProfileSlot(1, 0);
 		rightMaster.selectProfileSlot(1, 0);
@@ -243,6 +278,13 @@ public class Drivetrain extends Subsystem {
     SmartDashboard.putNumber("Drive Right Neo", getRightPosition());
     SmartDashboard.putNumber("Drive Left Talon", getLeftPositionTalon());
     SmartDashboard.putNumber("Drive Right Talon", getRightPositionTalon());
+
+    SmartDashboard.putNumber("Velocity Left", getLeftVelocity());
+    SmartDashboard.putNumber("Velocity Right", getRightVelocity());
+
+    SmartDashboard.putNumber("Gryro Heading0", getGyroHeading0());
+    SmartDashboard.putNumber("Gryro Heading1", getGyroHeading1());
+    SmartDashboard.putNumber("Gryro Heading2", getGyro3());
 
     SmartDashboard.putNumber("% Right", rightMaster.getMotorOutputPercent());
     SmartDashboard.putNumber("% Left", leftMaster.getMotorOutputPercent());

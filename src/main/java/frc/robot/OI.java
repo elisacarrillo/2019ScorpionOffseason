@@ -30,8 +30,8 @@ public class OI {
   public static Gamepad vision = new Gamepad(4);
   
   // DRIVE
-  public static DoubleSupplier turn = () -> (-driver.getRightX()*.8); //was .7
-  public static DoubleSupplier throttle = () -> (driver.getLeftY()*.95); //was .9
+  public static DoubleSupplier turn = () -> (driver.getRightX()*.8); //was .7
+  public static DoubleSupplier throttle = () -> (-driver.getLeftY()*.95); //was .9
 
   // BALL INTAKE
   public static Button ballFeedIn = new JoystickButton(driver,Gamepad.BUTTON_SHOULDER_RIGHT);

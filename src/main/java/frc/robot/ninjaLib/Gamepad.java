@@ -52,9 +52,10 @@ public class Gamepad extends Joystick {
 	}
 	
 	
-	public double getLeftTrigger() {
-		return getRawAxis(AXIS_SHOULDER_L);
-	}
+//	public double getLeftTrigger() {
+//		if (getButton(BUTTON_TRIGGER_LEFT) = true)
+//		return getRawAxis(AXIS_SHOULDER_L);
+//	}
 	
 	public double getRightTrigger() {
 		return getRawAxis(AXIS_SHOULDER_R);
@@ -98,6 +99,14 @@ public class Gamepad extends Joystick {
 		return getRawButton(BUTTON_X);
 	}
 
+	public boolean getButtonStateL() {
+		return getRawButton(BUTTON_TRIGGER_LEFT);
+	}
+
+	
+	public boolean getButtonStateR() {
+		return getRawButton(BUTTON_TRIGGER_RIGHT);
+	}
 	/**
 	 * Checks whether Button Y is being pressed and returns true if it is.
 	 */

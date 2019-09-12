@@ -36,8 +36,9 @@ public class Constants {
 
 	//Motion Profiling Constants
 															// units
-	public static double kDrive_Motion_P = 1.4;				// %/ft
-	public static double kDrive_Motion_D = 0.0;				// %/(ft/s)
+	public static double kDrive_Motion_P = 0.75;				// %/ft
+	public static double kDrive_Motion_I = 0.0;
+	public static double kDrive_Motion_D = 0;				// %/(ft/s)
 	public static double kDrive_Motion_V = 0.058;			// %/(ft/s) max turn speed
 	public static double kDrive_Motion_A = 0.0;	
 	public static double kDrive_peakOutput = 0.8;
