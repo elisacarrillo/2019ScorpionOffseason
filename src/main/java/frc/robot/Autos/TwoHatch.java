@@ -18,26 +18,42 @@ import jaci.pathfinder.Waypoint;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import frc.robot.HAL;
-
+import frc.robot.subsystems.BallFeeder;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 
 public class TwoHatch extends CommandGroup {
-  Waypoint[] points = new Waypoint[] {
+  Waypoint[] StarttoSetupWP = new Waypoint[] {
     new Waypoint(5, 10, 0),
     new Waypoint(18, 7, Pathfinder.d2r(30)),
     new Waypoint(23, 3.5, 0)
     };
 
-  Waypoint[] points2 = new Waypoint[] {
+  Waypoint[] SetuptoRocketWP = new Waypoint[] {
     new Waypoint(23, 3.5, 0),
     new Waypoint(18, 7, Pathfinder.d2r(-20))
     };
 
-  Waypoint[] points3 = new Waypoint[] {
+  Waypoint[] RockettoSetupWP = new Waypoint[] {
+    new Waypoint(18, 7, Pathfinder.d2r(-20)),
+    new Waypoint(23, 3.5, 0),
+    };
+   
+  Waypoint[] SetuptoFeedWP = new Waypoint[] {
     new Waypoint(23, 3.5, 0),
     new Waypoint(9.5, 4.5, 0),
     new Waypoint(0, 2, 0)
     };
+  Waypoint[] FeedtoSetupWP = new Waypoint[] {
+    new Waypoint(0, 2, 0),
+    new Waypoint(9.5, 4.5, 0),
+    new Waypoint(23, 3.5, 0)
+    }; 
+ // Waypoint[] SetuptoRocket2 = new Waypoint[] {
+    // new Waypoint(23, 3.5, 0),
+    // new Waypoint(9.5, 4.5, 0),
+    // new Waypoint(0, 2, 0)
+    // };  
         
 Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH,
     0.02,   //delta time
@@ -46,18 +62,18 @@ Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CU
     500); //max jerk in ft/s/s/s for the motion profile
 
 
-Trajectory trajectory = Pathfinder.generate(points, config);
-Trajectory trajectory2 = Pathfinder.generate(points2, config);
-Trajectory trajectory3 = Pathfinder.generate(points3, config);
+Trajectory StarttoSetup = Pathfinder.generate(StarttoSetupWP, config);
+Trajectory SetuptoRocket = Pathfinder.generate(SetuptoRocketWP, config);
+Trajectory RockettoSetup = Pathfinder.generate(RockettoSetupWP, config);
+Trajectory SetuptoFeed = Pathfinder.generate(SetuptoFeedWP, config);
+Trajectory FeedtoSetup = Pathfinder.generate(FeedtoSetupWP, config);
 
 public TwoHatch(boolean backwards) {
-  addSequential(new FollowTrajectory(trajectory, true));
-  addSequential(new FollowTrajectory(trajectory2, false));
- // addParallel(new SetElevatorShoulderWrist(Wrist.WristPreset.ROCKET_LOW_HATCH,Shoulder.ShoulderPreset.ROCKET_LOW_HATCH,Elevator.ElevatorPreset.ROCKET_LOW_HATCH));
-  addSequential(new FollowTrajectory(trajectory2, true));
-  addSequential(new FollowTrajectory(trajectory3, false));
- // addParallel(new SetElevatorShoulderWrist(Wrist.WristPreset.FEEDER_STATION_HATCH, Shoulder.ShoulderPreset.FEEDER_STATION_HATCH, Elevator.ElevatorPreset.FEEDER_STATION_HATCH));
-  addSequential(new FollowTrajectory(trajectory3, true));
-  addSequential(new FollowTrajectory(trajectory2, false));
+  addSequential(new FollowTrajectory(StarttoSetup, true));
+  addSequential(new FollowTrajectory(SetuptoRocket, false));
+  addSequential(new FollowTrajectory(RockettoSetup, true));
+  addSequential(new FollowTrajectory(SetuptoFeed, false));
+  addSequential(new FollowTrajectory(FeedtoSetup, true));
+  addSequential(new FollowTrajectory(SetuptoRocket, false));
 }
 }
