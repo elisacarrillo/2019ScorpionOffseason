@@ -70,10 +70,15 @@ Trajectory FeedtoSetup = Pathfinder.generate(FeedtoSetupWP, config);
 
 public TwoHatch(boolean backwards) {
   addSequential(new FollowTrajectory(StarttoSetup, true));
+ // addParallel(new SetElevatorShoulderWrist(Wrist.WristPreset.ROCKET_LOW_HATCH, Shoulder.ShoulderPreset.ROCKET_LOW_HATCH, Elevator.ElevatorPreset.ROCKET_LOW_HATCH));
   addSequential(new FollowTrajectory(SetuptoRocket, false));
+ // addSequential(new SetFeeder(BallFeeder.State.UNFEED, BallFeeder.State.STOP, 0.5));
   addSequential(new FollowTrajectory(RockettoSetup, true));
   addSequential(new FollowTrajectory(SetuptoFeed, false));
+ // addSequential(new SetFeeder(BallFeeder.State.UNFEED, BallFeeder.State.STOP, 1.0));
   addSequential(new FollowTrajectory(FeedtoSetup, true));
   addSequential(new FollowTrajectory(SetuptoRocket, false));
+ // addSequential(new SetFeeder(BallFeeder.State.UNFEED, BallFeeder.State.STOP, 0.5));
 }
 }
+
