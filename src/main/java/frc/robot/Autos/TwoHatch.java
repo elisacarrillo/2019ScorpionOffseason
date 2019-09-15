@@ -35,7 +35,7 @@ public class TwoHatch extends CommandGroup {
     };
 
   Waypoint[] RockettoSetupWP = new Waypoint[] {
-    new Waypoint(18, 7, Pathfinder.d2r(-20)),
+    new Waypoint(18, 7, Pathfinder.d2r(160)),//was -20;Added 180 because we changed whih direction was front
     new Waypoint(23, 3.5, 0),
     };
    
